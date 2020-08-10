@@ -41,7 +41,7 @@ cloud_cb (const sensor_msgs::PointCloud2ConstPtr& input)
  // vg.setLeafSize (0.01f, 0.01f, 0.01f);
   vg.setLeafSize (0.05f, 0.05f, 0.05f); //10cm
   vg.filter (*cloud_filtered);
-  std::cout << "PointCloud after filtering has: " << cloud_filtered->points.size ()  << " data points." << std::endl; //*
+  //std::cout << "PointCloud after filtering has: " << cloud_filtered->points.size ()  << " data points." << std::endl; //*
 
   // Create the segmentation object for the planar model and set all the parameters
   pcl::SACSegmentation<pcl::PointXYZ> seg;
@@ -63,7 +63,7 @@ cloud_cb (const sensor_msgs::PointCloud2ConstPtr& input)
     seg.segment (*inliers, *coefficients);
     if (inliers->indices.size () == 0)
     {
-      std::cout << "Could not estimate a planar model for the given dataset." << std::endl;
+      //std::cout << "Could not estimate a planar model for the given dataset." << std::endl;
      // break;
     }
 
@@ -75,7 +75,7 @@ cloud_cb (const sensor_msgs::PointCloud2ConstPtr& input)
 
     // Get the points associated with the planar surface
     extract.filter (*cloud_plane);
-    std::cout << "PointCloud representing the planar component: " << cloud_plane->points.size () << " data points." << std::endl;
+    //std::cout << "PointCloud representing the planar component: " << cloud_plane->points.size () << " data points." << std::endl;
 
     // Remove the planar inliers, extract the rest
    // extract.setNegative (true);
@@ -88,7 +88,7 @@ cloud_cb (const sensor_msgs::PointCloud2ConstPtr& input)
   //pcl::search::KdTree<pcl::PointXYZ> tree;
 if(cloud_filtered->size()>0){
   tree->setInputCloud (cloud_filtered);
-    std::cout << "here in kd tree" << std::endl;
+   // std::cout << "here in kd tree" << std::endl;
   std::vector<pcl::PointIndices> cluster_indices;
   pcl::EuclideanClusterExtraction<pcl::PointXYZ> ec;
   ec.setClusterTolerance (0.2); // 2cm
@@ -97,11 +97,11 @@ if(cloud_filtered->size()>0){
   ec.setSearchMethod (tree);
   ec.setInputCloud (cloud_filtered);
   ec.extract (cluster_indices);
-    std::cout << "after extraction " << cluster_indices.size() << std::endl;
+    std::cout << " " << cluster_indices.size() << std::endl;
   int j = 0;
   for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin (); it != cluster_indices.end (); ++it)
   {
-    std::cout << "in for" << std::endl;
+   // std::cout << "in for" << std::endl;
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZ>);
     for (std::vector<int>::const_iterator pit = it->indices.begin (); pit != it->indices.end (); ++pit)
     cloud_cluster->points.push_back (cloud_filtered->points[*pit]); //*
@@ -110,7 +110,7 @@ if(cloud_filtered->size()>0){
     cloud_cluster->height = 1;
     cloud_cluster->is_dense = true;
 
-    std::cout << "cluster="<< j <<"PointCloud representing the Cluster: " << cloud_cluster->points.size () << " data points." << std::endl;
+    //std::cout << "cluster="<< j <<"PointCloud representing the Cluster: " << cloud_cluster->points.size () << " data points." << std::endl;
     std::stringstream ss;
     //ss << "/home/mohamed/catkin_ws/pcl_cpp_tutorial/src/cloud_cluster_" << j << ".pcd";
    // writer.write<pcl::PointXYZ> (ss.str (), *cloud_cluster, false); //*
