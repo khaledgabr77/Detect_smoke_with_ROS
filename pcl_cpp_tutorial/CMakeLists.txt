@@ -10,6 +10,7 @@ project(pcl_cpp_tutorial)
 find_package(catkin REQUIRED COMPONENTS
   PCL
   roscpp
+  std_msgs
 )
 
 
@@ -44,7 +45,7 @@ ADD_DEFINITIONS(${PCL_DEFINITIONS})
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(${PROJECT_NAME}_node src/edite_example.cpp)
+add_executable(${PROJECT_NAME}_node src/example.cpp)
 
 
 ## Specify libraries to link a library or executable target against

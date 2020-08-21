@@ -1,4 +1,5 @@
 #include <ros/ros.h>
+#include "std_msgs/Int16.h"
 #include <sensor_msgs/PointCloud2.h>
 // PCL specific includes
 #include <pcl/conversions.h>
@@ -18,6 +19,7 @@
 #include <pcl_ros/point_cloud.h>
 
 ros::Publisher pub;
+//ros::Publisher pub1;
 
 void 
 cloud_cb (const sensor_msgs::PointCloud2ConstPtr& input)
@@ -110,30 +112,39 @@ if(cloud_filtered->size()>0){
     cloud_cluster->height = 1;
     cloud_cluster->is_dense = true;
 
-    //std::cout << "cluster="<< j <<"PointCloud representing the Cluster: " << cloud_cluster->points.size () << " data points." << std::endl;
+    std::cout << "cluster="<< j <<"PointCloud representing the Cluster: " << cloud_cluster->points.size () << " data points." << std::endl;
     std::stringstream ss;
     //ss << "/home/mohamed/catkin_ws/pcl_cpp_tutorial/src/cloud_cluster_" << j << ".pcd";
    // writer.write<pcl::PointXYZ> (ss.str (), *cloud_cluster, false); //*
     j++;
+    msg.data = j;
   }
 
 }
-  sensor_msgs::PointCloud2 output;
+  //sensor_msgs::PointCloud2 output;
+  std_msgs::Int16 msg;
+  
   // Publish the data
-  pub.publish (output);
+  //pub.publish (output);
+  pub.publish(msg);
 }
+
 
 int main (int argc, char** argv)
 {
   // Initialize ROS
-  ros::init (argc, argv, "pcl_cpp_tutorial");
+  //ros::init (argc, argv, "pcl_cpp_tutorial");
+  ros::init (argc, argv, "HMM_model");
   ros::NodeHandle nh;
 
   // Create a ROS subscriber for the input point cloud
-  ros::Subscriber sub = nh.subscribe ("/laser_pointcloud", 1, cloud_cb);
+  //ros::Subscriber sub = nh.subscribe ("/laser_pointcloud", 1, cloud_cb);
+
+  pub = nh.advertise<std_msgs::Int16>("/data", 1);
 
   // Create a ROS publisher for the output point cloud
-  pub = nh.advertise<sensor_msgs::PointCloud2> ("/output_cloud", 1);
+  //pub = nh.advertise<sensor_msgs::PointCloud2> ("/output_cloud", 1);
+
 
   // Spin
   ros::spin ();
