@@ -98,7 +98,7 @@ def cluster_data():
     rospy.Subscriber('/cluster_num', Int16, Callback)
     
 
-    Clusters = np.loadtxt('/home/khaled/saied_ws/src/hmm_model/src/khaled_log.txt')
+    Clusters = np.loadtxt('/home/khaled/saied_ws/src/khaled_model_hmm/src/khaled_log1.txt')
     # log transform the data and fit the HMM
     seq_len=len(Clusters)
     print('length',seq_len)
@@ -108,7 +108,7 @@ def cluster_data():
     	if hidden_states[i]==1:
 		print('Anamoly detected at sample',i)	    
     plt.switch_backend('agg') # turn off display when running with Cygwin
-    plotTimeSeries(Clusters, hidden_states, 'Number of Clusters', '/home/khaled/saied_ws/src/hmm_model/src/StateTseries_Log2.png')
+    plotTimeSeries(Clusters, hidden_states, 'Number of Clusters', '/home/khaled/saied_ws/src/khaled_model_hmm/src/StateTseries_Log22.png')
     rospy.spin()	
 
 if __name__ == '__main__':
